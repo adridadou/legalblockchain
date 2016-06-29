@@ -24,6 +24,8 @@ class ClauseParsingSpec extends FlatSpec with Matchers {
     val parser = new ClauseParser
     val result = parser.parse(clauseSource).get
 
+    println(result.parameters)
+
     new ClauseValidation().validate(result) should be (ValidationSuccess)
   }
 }

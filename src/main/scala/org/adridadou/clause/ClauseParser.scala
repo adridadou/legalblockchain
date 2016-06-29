@@ -4,6 +4,7 @@ import java.io.InputStreamReader
 
 import org.adridadou.fields._
 import org.yaml.snakeyaml.Yaml
+import sun.jvm.hotspot.oops.DefaultOopVisitor
 
 import scala.util.{Failure, Success, Try}
 import scala.collection.JavaConversions._
@@ -28,17 +29,21 @@ class ClauseParser {
 
     val parameters = parameterSection.map({case (name,value) =>
       val options = value.asInstanceOf[java.util.Map[String,String]].toMap
-      name -> toContractField(options("type"))
+      toContractField(options("type")).map(name -> _) match {
+        case Some(v) => v
+        case None => throw new IllegalArgumentException("unknown type " + options("type") + " for parameter " + name)
+      }
     })
 
     Success(Clause(text,parameters))
   }
 
-  private def toContractField(value:String):ContractField = value match {
-    case "Address" => Address
-    case "FullName" => FullName
-    case "Date" => ContractDate
-    case _ => Unknown(value)
+  private def toContractField(value:String):Option[ContractField] = value match {
+    case Address.id => Some(Address)
+    case FullName.id => Some(FullName)
+    case ContractDate.id => Some(ContractDate)
+    case DollarPrice.id => Some(DollarPrice)
+    case _ => None
   }
 }
 

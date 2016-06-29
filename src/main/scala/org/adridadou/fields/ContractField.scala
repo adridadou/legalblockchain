@@ -5,7 +5,7 @@ package org.adridadou.fields
   * This code is released under Apache 2 license
   */
 trait ContractField {
-  def id : String
+  val id : String
 }
 
 

@@ -21,7 +21,7 @@ class ClauseValidationSpec extends FlatSpec with Matchers {
     validator.validate(Clause(clauseText, Map[String,ContractField](
       "contractor" -> FullName,
       "contractorBirthdate" -> ContractDate
-    ),"")) should be (ValidationSuccess)
+    ))) should be (ValidationSuccess)
   }
 
   it should "return an error if a parameter is missing" in {
@@ -33,6 +33,6 @@ class ClauseValidationSpec extends FlatSpec with Matchers {
     val validator = new ClauseValidation()
     validator.validate(Clause(clauseText, Map[String,ContractField](
       "contractor" -> FullName
-    ),"")) should be (ValidationError)
+    ))) should be (ValidationError)
   }
 }

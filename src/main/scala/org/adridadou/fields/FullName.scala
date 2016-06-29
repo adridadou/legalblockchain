@@ -5,5 +5,5 @@ package org.adridadou.fields
   * This code is released under Apache 2 license
   */
 case object FullName extends ContractField {
-  override def id: String = "Full Name"
+  override val id: String = "Name"
 }

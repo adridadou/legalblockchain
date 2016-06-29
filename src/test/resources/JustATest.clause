@@ -3,9 +3,9 @@ header:
     description: This is just a test to see how it works
 parameters:
     contractor:
-        type: FullName
+        type: Name
 
     contractorBirthdate:
-        type: ContractDate
+        type: Date
 text:
     This is my clause. {{contractor}}. And I am born in {{contractorBirthdate}}

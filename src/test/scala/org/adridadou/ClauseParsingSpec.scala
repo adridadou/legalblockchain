@@ -1,5 +1,7 @@
 package org.adridadou
 
+import java.io.File
+
 import org.adridadou.clause.ClauseParser
 import org.adridadou.markdown.{ClauseValidation, ValidationSuccess}
 import org.scalatest._
@@ -14,18 +16,20 @@ class ClauseParsingSpec extends FlatSpec with Matchers {
   "Clause Parser" should "read a file and create a clause object" in {
     val clauseSource = Source.fromFile("src/test/resources/JustATest.clause").reader()
     val parser = new ClauseParser
-    val result = parser.parse(clauseSource).get
+    val result = parser.parse(clauseSource).get._1
 
     new ClauseValidation().validate(result) should be (ValidationSuccess)
   }
 
   "Clause Parser" should "read this actual clause" in {
-    val clauseSource = Source.fromFile("src/test/resources/legaldomain/convertible_promissory_note_preamble.clause").reader()
-    val parser = new ClauseParser
-    val result = parser.parse(clauseSource).get
+    val folder = new File("src/test/resources/legaldomain")
+    folder.listFiles().filter(_.getName.endsWith(".clause")).foreach(file => {
+      println("parsing " + file.getName)
+      val parser = new ClauseParser
+      val result = parser.parse(Source.fromFile(file).reader()).get._1
 
-    println(result.parameters)
+      new ClauseValidation().validate(result) should be (ValidationSuccess)
+    })
 
-    new ClauseValidation().validate(result) should be (ValidationSuccess)
   }
 }

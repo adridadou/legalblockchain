@@ -6,8 +6,8 @@ parameters:
    Maturity Date:
        type: Date
 
-text:
- #	''''Modification; Waiver''''. Any term of this Note may be amended or waived with the written consent of the Company and the Requisite Holders.  
-
 Category: Convertible Promissory Note, Modification, Waiver, Venture Capital, Seed Financing, Tech Stars
+
+text:
+ #	''''Modification; Waiver''''. Any term of this Note may be amended or waived with the written consent of the Company and the Requisite Holders.
 

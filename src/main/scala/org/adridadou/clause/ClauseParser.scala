@@ -4,7 +4,6 @@ import java.io.InputStreamReader
 
 import org.adridadou.fields._
 import org.yaml.snakeyaml.Yaml
-import sun.jvm.hotspot.oops.DefaultOopVisitor
 
 import scala.util.{Failure, Success, Try}
 import scala.collection.JavaConversions._
@@ -15,7 +14,7 @@ import scala.collection.JavaConversions._
   */
 class ClauseParser {
 
-  def parse(input:InputStreamReader): Try[Clause] = {
+  def parse(input:InputStreamReader): Try[(Clause,String)] = {
     val parser = new Yaml()
     parser.load(input) match {
       case map:java.util.Map[String,String] => toClause(map.toMap)
@@ -23,7 +22,7 @@ class ClauseParser {
     }
   }
 
-  private def toClause(map:Map[String,Any]):Try[Clause] = {
+  private def toClause(map:Map[String,Any]):Try[(Clause, String)] = {
     val parameterSection = map("parameters").asInstanceOf[java.util.Map[String,Any]].toMap
     val text = map("text").asInstanceOf[String]
 
@@ -35,7 +34,9 @@ class ClauseParser {
       }
     })
 
-    Success(Clause(text,parameters))
+    val category = map.getOrElse("category", "").asInstanceOf[String]
+
+    Success(Clause(text,parameters),category)
   }
 
   private def toContractField(value:String):Option[ContractField] = value match {
@@ -43,6 +44,7 @@ class ClauseParser {
     case FullName.id => Some(FullName)
     case ContractDate.id => Some(ContractDate)
     case DollarPrice.id => Some(DollarPrice)
+    case Number.id => Some(Number)
     case _ => None
   }
 }
